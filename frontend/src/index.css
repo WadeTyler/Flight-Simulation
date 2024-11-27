@@ -25,20 +25,15 @@
   }
 }
 
-/* .world-map-container {
+.world-map-container {
   background-position: center;
   background-size: contain;
-  background-image: url("/world-map2.png");
-} */
-
-@keyframes spin {
-  from {transform:rotate(0deg);}
-  to {transform:rotate(360deg);}
+  background-image: url("/world-map.png");
 }
 
+
 .station {
-  animation: spin 3s linear infinite;
-  @apply bg-gradient-to-t from-primary to-green-800 shadow-xl shadow-black absolute w-[15px] h-[15px] rounded-full -translate-x-1/2 -translate-y-1/2;
+  @apply bg-primary shadow-xl shadow-black absolute w-[15px] h-[15px] rounded-full -translate-x-1/2 -translate-y-1/2;
 }
 
 .input-bar {

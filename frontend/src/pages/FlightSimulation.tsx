@@ -1,9 +1,10 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Airplane, MousePosition, Station } from "../types";
 import CreateStation from "../components/CreateStation";
 import Sidebar from "../components/Sidebar";
 import StationComponent from "../components/StationComponent";
-import { calculateLatitude, calculateLongitude } from "../lib/utils";
+import { calculateLatitude, calculateLongitude, calculateX, calculateY } from "../lib/utils";
+import { Client } from "@stomp/stompjs";
 
 const FlightSimulation = () => {
 
@@ -16,32 +17,99 @@ const FlightSimulation = () => {
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const worldMap = document.getElementById('world-map-container');
     if (worldMap) {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+
+      const rect = worldMap.getBoundingClientRect();
+
+      const relativeX = e.clientX - rect.left;
+      const relativeY = e.clientY - rect.top;
+      const relativeXPercentage = (relativeX / rect.width) * 100;
+      const relativeYPercentage = (relativeY / rect.height) * 100;
+
+      setMousePosition({ x: relativeXPercentage, y: relativeYPercentage });
     }
   };
 
+  const [client, setClient] = useState<Client | null>(null);
+
+  useEffect(() => {
+    const stompClient = new Client({
+      brokerURL: "ws://localhost:8080/ws",
+      debug: (str) => {
+        console.log(str);
+      },
+      onConnect: () => {
+        console.log("Connected to WebSocket via STOMP");
+        stompClient.subscribe("/topic/stations", (message) => {
+          // handle incoming messages
+          const response = JSON.parse(message.body);
+          console.log(response);
+        });
+
+        stompClient.subscribe("/topic/newstation", (message) => {
+          // handle new stations
+          const response = JSON.parse(message.body);
+          console.log(response);
+
+          const newStation: Station = {
+            name: response.name,
+            longitude: response.longitude,
+            latitude: response.latitude,
+            x: calculateX(response.longitude),
+            y: calculateX(response.latitude)
+          };
+
+          setStations([...stations, newStation]);
+        });
+      },
+      onWebSocketError: (error) => {
+        console.log("Error: ", error);
+      },
+      onDisconnect: () => {
+        console.log("Disconnected");
+      }
+    });
+
+    stompClient.activate();
+    setClient(stompClient);
+
+
+    return () => {
+      if (client) {
+        client.deactivate();
+      }
+    };
+
+  }, []);
+
   return (
-    <div className="bg-zinc-900 w-full h-screen flex items-center justify-center">
+    <div className="bg-zinc-900 w-full h-screen flex items-center justify-center relative">
       <div className='el w-full h-screen absolute' />
       <Sidebar />
-        <div id="world-map-container" className="world-map-container z-20 flex items-center justify-center w-full h-full" onMouseMove={handleMouseMove} onClick={() => setCreatingStation(true)} >
+        <div id="world-map-container" className="world-map-container z-20 flex items-center justify-center w-full h-full relative" onMouseMove={handleMouseMove} onClick={() => setCreatingStation(true)} >
 
-          <img src="/world-map.png" alt="World Map Image" className=""/>
+          {/* <img src="/world-map.png" alt="World Map Image" className="relative w-full h-full"/> */}
           {/* Map Stations */}
           {stations.map((station) => (
             <StationComponent station={station} key={station.name} />
           ))}
+
+          {/* Lon/Lat */}
+          <div className="absolute bottom-2 right-2 flex gap-4">
+            <p className="text-white text-xs"><span className="text-primary">Longitude: </span>{calculateLongitude(mousePosition.x)}</p>
+            <p className="text-white text-xs"><span className="text-primary">Latitude: </span>{calculateLatitude(mousePosition.y)}</p>
+          </div>
+
+          <div className="absolute bottom-2 left-2 flex gap-4">
+            <p className="text-white text-xs"><span className="text-primary">X: </span>{mousePosition.x}</p>
+            <p className="text-white text-xs"><span className="text-primary">Y: </span>{mousePosition.y}</p>
+          </div>
         </div>
       
 
-      {creatingStation && <CreateStation mousePosition={mousePosition} stations={stations} setStations={setStations} setCreatingStation={setCreatingStation} />}
+      {creatingStation && <CreateStation mousePosition={mousePosition} stations={stations} setStations={setStations} setCreatingStation={setCreatingStation} client={client} />}
 
 
-      {/* Lon/Lat */}
-      <div className="fixed bottom-2 right-2 flex gap-4">
-        <p className="text-white text-xs"><span className="text-primary">Longitude: </span>{calculateLongitude(mousePosition.x)}</p>
-        <p className="text-white text-xs"><span className="text-primary">Latitude: </span>{calculateLatitude(mousePosition.y)}</p>
-      </div>
+      
     </div>
   )
 }

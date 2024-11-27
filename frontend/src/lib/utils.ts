@@ -1,56 +1,30 @@
 
 
-export const calculateLongitude = (x: number) => {
-
-  const worldMap = document.getElementById('world-map-container');
-  if (!worldMap) {
-    return 0;
-  }
-
-  const mapWidth = worldMap.clientWidth;
-
-  let longitude = (x /mapWidth) * 360 - 180;
-  longitude -= 48;
+export const calculateLongitude = (xPercent: number) => {
+  const longitude = xPercent * 360 / 100 - 180; // Convert percentage to longitude
   return longitude;
-}
+};
+
 
 export const calculateX = (longitude: number) => {
+  const xPercent = ((longitude + 180) / 360) * 100; // Convert longitude to percentage
+  return xPercent;
+};
 
-  const worldMap = document.getElementById('world-map-container');
-  if (!worldMap) {
-    return 0;
-  }
 
-  const mapWidth = worldMap.clientWidth;
 
-  const x = (longitude + 180) * mapWidth / 360;
-  return x;
-}
-
-export const calculateLatitude = (y: number) => {
-
-  const worldMap = document.getElementById('world-map-container');
-  if (!worldMap) {
-    return 0;
-  }
-
-  const mapHeight = worldMap.clientHeight;
-
-  let latitude = 90 - (y / mapHeight) * 180;
-  latitude += 25;
+export const calculateLatitude = (yPercent: number) => {
+  const latitude = 90 - (yPercent * 180) / 100; // Correct conversion from percentage
   return latitude;
-}
+};
+
 
 export const calculateY = (latitude: number) => {
+  console.log("============");
+  console.log("number: ", latitude);;
+  const yPercent = ((latitude + 90) / 180) * 100; // Correct conversion from latitude to percentage
+  console.log("yPercent: ", yPercent);
+  console.log("============");
+  return yPercent;
+};
 
-  const worldMap = document.getElementById('world-map-container');
-  if (!worldMap) {
-    return 0;
-  }
-
-  const mapHeight = worldMap.clientHeight;
-
-
-  const y = (90 - latitude) * mapHeight / 180;
-  return y;
-}
