@@ -98,7 +98,7 @@ const FlightSimulation = () => {
       <Sidebar />
         <div className="z-20 flex items-center justify-center w-full h-full relative">
 
-          <img src="/world-map.png" alt="World Map Image" className="relative w-full h-full" id="world-map-container" onMouseMove={handleMouseMove} onClick={() => setCreatingStation(true)} />
+          <img src="/world-map7.png" alt="World Map Image" className="relative w-full h-full" id="world-map-container" onMouseMove={handleMouseMove} onClick={() => setCreatingStation(true)} />
           {/* Map Stations */}
           {stations.map((station, index) => (
             <StationComponent station={station} key={index} />
