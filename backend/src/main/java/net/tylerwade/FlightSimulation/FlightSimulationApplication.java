@@ -8,12 +8,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.util.RouteMatcher;
 
-import java.lang.reflect.Array;
+import java.sql.Array;
 import java.util.ArrayList;
 
 @SpringBootApplication
 @EnableScheduling
 public class FlightSimulationApplication {
+
+	public static ArrayList<Station> stations = new ArrayList<>();
 
 	public static void main(String[] args) {
 		SpringApplication.run(FlightSimulationApplication.class, args);
@@ -22,6 +24,10 @@ public class FlightSimulationApplication {
 		Station virginiaStation = new Station("Viriginia Airlines", 37.4316, -78.6569);
 		Station californiaStation = new Station("California Airlines", 36.7783, -119.4179);
 		Station texasStation = new Station("Texas Airlines" , 31.9686, -99.9018);
+
+		stations.add(virginiaStation);
+		stations.add(californiaStation);
+		stations.add(texasStation);
 
 		System.out.println(virginiaStation);
 		System.out.println(californiaStation);
@@ -35,5 +41,14 @@ public class FlightSimulationApplication {
 		FlightController flight1 = new FlightController(startingPoint, plane1);
 		flight1.startFlight();
 	}
+
+	public static ArrayList<Station> getStations() {
+		return stations;
+	}
+
+	public static void addStation(Station station) {
+		stations.add(station);
+	}
+
 
 }

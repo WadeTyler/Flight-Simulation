@@ -25,16 +25,13 @@
   }
 }
 
-.world-map-container {
+/* .world-map-container {
   background-position: center;
-  background-size: contain;
+  background-size: 100%;
   background-image: url("/world-map.png");
-}
+} */
 
 
-.station {
-  @apply bg-primary shadow-xl shadow-black absolute w-[15px] h-[15px] rounded-full -translate-x-1/2 -translate-y-1/2;
-}
 
 .input-bar {
   @apply p-2 border-primary border-2 rounded-lg focus:ring-0 focus:outline-none focus:shadow-lg hover:shadow-lg;

@@ -20,11 +20,14 @@ export const calculateLatitude = (yPercent: number) => {
 
 
 export const calculateY = (latitude: number) => {
-  console.log("============");
-  console.log("number: ", latitude);;
-  const yPercent = ((latitude + 90) / 180) * 100; // Correct conversion from latitude to percentage
-  console.log("yPercent: ", yPercent);
-  console.log("============");
+  // console.log("============");
+  // console.log("latitude: ", latitude);
+
+  const yPercent = ((90 - latitude) / 180) * 100; // Convert latitude to percentage;
+
+  // console.log("yPercent: ", yPercent);
+  // console.log("============");
+
   return yPercent;
 };
 

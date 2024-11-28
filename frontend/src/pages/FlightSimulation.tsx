@@ -42,8 +42,18 @@ const FlightSimulation = () => {
         stompClient.subscribe("/topic/stations", (message) => {
           // handle incoming messages
           const response = JSON.parse(message.body);
+
+          response.forEach((station: Station) => {
+            station.x = calculateX(station.longitude);
+            station.y = calculateY(station.latitude);
+          });
+
           console.log(response);
+          setStations(response);
         });
+
+        // Load stations
+        stompClient.publish({ destination: "/app/retrievestations" });
 
         stompClient.subscribe("/topic/newstation", (message) => {
           // handle new stations
@@ -55,10 +65,12 @@ const FlightSimulation = () => {
             longitude: response.longitude,
             latitude: response.latitude,
             x: calculateX(response.longitude),
-            y: calculateX(response.latitude)
+            y: calculateY(response.latitude)
           };
 
-          setStations([...stations, newStation]);
+          console.log(newStation);
+
+          setStations(prevStations => [...prevStations, newStation]);
         });
       },
       onWebSocketError: (error) => {
@@ -85,12 +97,12 @@ const FlightSimulation = () => {
     <div className="bg-zinc-900 w-full h-screen flex items-center justify-center relative">
       <div className='el w-full h-screen absolute' />
       <Sidebar />
-        <div id="world-map-container" className="world-map-container z-20 flex items-center justify-center w-full h-full relative" onMouseMove={handleMouseMove} onClick={() => setCreatingStation(true)} >
+        <div className="z-20 flex items-center justify-center w-full h-full relative">
 
-          {/* <img src="/world-map.png" alt="World Map Image" className="relative w-full h-full"/> */}
+          <img src="/world-map.png" alt="World Map Image" className="relative w-full h-full" id="world-map-container" onMouseMove={handleMouseMove} onClick={() => setCreatingStation(true)} />
           {/* Map Stations */}
-          {stations.map((station) => (
-            <StationComponent station={station} key={station.name} />
+          {stations.map((station, index) => (
+            <StationComponent station={station} key={index} />
           ))}
 
           {/* Lon/Lat */}
@@ -105,11 +117,8 @@ const FlightSimulation = () => {
           </div>
         </div>
       
-
       {creatingStation && <CreateStation mousePosition={mousePosition} stations={stations} setStations={setStations} setCreatingStation={setCreatingStation} client={client} />}
 
-
-      
     </div>
   )
 }

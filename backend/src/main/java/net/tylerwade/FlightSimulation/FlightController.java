@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+
 public class FlightController {
 
     // Array of stations in traversal order. The first station is always the starting station
@@ -32,6 +33,7 @@ public class FlightController {
         this.startingPoint = startingPoint;
         this.airplane = airplane;
     }
+
 
     // Traverse the route. Start by calculating the flightduration between the start station and the second station. Set a timerTask to run every .5-second to update the plane's current location. Update to websocket.
     public void startFlight() {
