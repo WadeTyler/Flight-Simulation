@@ -1,10 +1,10 @@
-import React, { SetStateAction, useState } from "react";
+import React, { SetStateAction } from "react";
 import { MousePosition, Station } from "../types"
 import { CloseButton } from "./CloseButton";
 import { calculateLatitude, calculateLongitude, calculateX, calculateY } from "../lib/utils";
 import { Client } from "@stomp/stompjs";
 
-const CreateStation = ({mousePosition, stations, setStations, setCreatingStation, client} :
+const CreateStation = ({mousePosition, setCreatingStation, client} :
    { mousePosition: MousePosition; stations: Station[]; setStations: React.Dispatch<SetStateAction<Station[]>>; setCreatingStation: React.Dispatch<SetStateAction<boolean>>; client: Client | null;
    }) => {
 

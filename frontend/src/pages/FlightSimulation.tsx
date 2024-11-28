@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Airplane, MousePosition, Station } from "../types";
+import { MousePosition, Station } from "../types";
 import CreateStation from "../components/CreateStation";
 import Sidebar from "../components/Sidebar";
 import StationComponent from "../components/StationComponent";
@@ -12,7 +12,6 @@ const FlightSimulation = () => {
 
   const [creatingStation, setCreatingStation] = useState<boolean>(false);
   const [stations, setStations] = useState<Station[]>([]);
-  const [airplanes, setAirplanes] = useState<Airplane[]>([]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const worldMap = document.getElementById('world-map-container');
