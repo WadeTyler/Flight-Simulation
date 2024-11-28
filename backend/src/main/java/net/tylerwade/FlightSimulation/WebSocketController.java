@@ -1,11 +1,13 @@
 package net.tylerwade.FlightSimulation;
 
 import net.tylerwade.FlightSimulation.models.Airplane;
+import net.tylerwade.FlightSimulation.models.RouteVertex;
 import net.tylerwade.FlightSimulation.models.Station;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.RouteMatcher;
 
 import java.util.ArrayList;
 
@@ -51,5 +53,65 @@ public class WebSocketController {
         messagingTemplate.convertAndSend("/topic/airplanes", airplanes);
     }
 
+    // Create a new flight
+    @MessageMapping("/createflight")
+    public void createAirplane(CreateFlightRequest flightRequest) {
+        System.out.println("Attempting to create an airplane");
 
+        System.out.println(flightRequest);
+
+        // Create linkedlist from array
+        RouteVertex head = null;
+        RouteVertex current = null;
+
+        for (Station station : flightRequest.getRoute()) {
+            RouteVertex newVertex = new RouteVertex();
+            newVertex.station = station;
+            if (head == null) {
+                head = newVertex;
+                current = head;
+            } else {
+                current.next = newVertex;
+                current = current.next;
+            }
+        }
+
+        // Add airplane
+
+        Airplane airplane = flightRequest.getAirplane();
+        FlightSimulationApplication.addAirplane(airplane);
+
+        // Create and Start the Flight
+        new FlightController(head, airplane);
+
+    }
+}
+
+class CreateFlightRequest {
+    private Airplane airplane;
+    private ArrayList<Station> route;
+
+    public Airplane getAirplane() {
+        return airplane;
+    }
+
+    public void setAirplane(Airplane airplane) {
+        this.airplane = airplane;
+    }
+
+    public ArrayList<Station> getRoute() {
+        return route;
+    }
+
+    public void setRoute(ArrayList<Station> route) {
+        this.route = route;
+    }
+
+    @Override
+    public String toString() {
+        return "CreateFlightRequest{" +
+                "airplane=" + airplane +
+                ", route=" + route +
+                '}';
+    }
 }

@@ -41,7 +41,6 @@ public class FlightSimulationApplication {
 		Airplane plane1 = new Airplane("Plane 1", 150);
 		airplanes.add(plane1);
 		FlightController flight1 = new FlightController(startingPoint, plane1);
-		flight1.startFlight();
 	}
 
 	public static ArrayList<Station> getStations() {

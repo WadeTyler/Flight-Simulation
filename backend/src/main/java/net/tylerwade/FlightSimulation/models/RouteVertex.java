@@ -6,7 +6,11 @@ package net.tylerwade.FlightSimulation.models;
 public class RouteVertex {
 
     public Station station;
-    public RouteVertex next;
+    public RouteVertex next = null;
+
+    public RouteVertex() {
+
+    }
 
     public RouteVertex(Station station, RouteVertex next) {
         this.station = station;

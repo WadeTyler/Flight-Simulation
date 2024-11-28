@@ -4,7 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="165dba01-a126-4c50-8bf2-636f6be85da1" name="Changes" comment="" />
+    <list default="true" id="165dba01-a126-4c50-8bf2-636f6be85da1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/CreateAirplane.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/net/tylerwade/FlightSimulation/FlightController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/net/tylerwade/FlightSimulation/FlightController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/net/tylerwade/FlightSimulation/FlightSimulationApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/net/tylerwade/FlightSimulation/FlightSimulationApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/net/tylerwade/FlightSimulation/ScheduledTasks.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/net/tylerwade/FlightSimulation/ScheduledTasks.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/net/tylerwade/FlightSimulation/WebSocketController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/net/tylerwade/FlightSimulation/WebSocketController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/net/tylerwade/FlightSimulation/models/Airplane.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/net/tylerwade/FlightSimulation/models/Airplane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/net/tylerwade/FlightSimulation/models/RouteVertex.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/net/tylerwade/FlightSimulation/models/RouteVertex.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Sidebar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/FlightSimulation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/FlightSimulation.tsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,6 +31,21 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "WadeTyler"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/WadeTyler/Flight-Simulation.git",
+    "accountId": "a53ad8d9-fd94-4061-9995-674fe2ec6a12"
+  }
+}]]></component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -24,9 +53,9 @@
       </MavenGeneralSettings>
     </option>
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 1
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="2pME7BgPZQh9PuknldZbSrLPhfg" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -36,6 +65,7 @@
   "keyToString": {
     "Application.FlightSimulationApplication.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/tylerwade/Desktop/FlightSimulation",
     "settings.editor.selected.configurable": "preferences.editor"

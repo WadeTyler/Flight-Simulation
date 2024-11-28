@@ -106,14 +106,10 @@ const FlightSimulation = () => {
   }, []);
 
 
-  useEffect(() => {
-    console.log(airplanes);
-  }, [airplanes]);
-
   return (
     <div className="bg-zinc-900 w-full h-screen flex items-center justify-center relative">
       <div className='el w-full h-screen absolute' />
-      <Sidebar />
+      <Sidebar stations={stations} airplanes={airplanes} setAirplanes={setAirplanes} client={client} />
         <div className="z-20 flex items-center justify-center w-full h-full relative">
 
           <img src="/world-map7.png" alt="World Map Image" className="relative w-full h-full" id="world-map-container" onMouseMove={handleMouseMove} onClick={() => setCreatingStation(true)} />

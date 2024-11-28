@@ -32,6 +32,8 @@ public class FlightController {
     public FlightController(RouteVertex startingPoint, Airplane airplane) {
         this.startingPoint = startingPoint;
         this.airplane = airplane;
+
+        startFlight();
     }
 
 
@@ -75,6 +77,7 @@ public class FlightController {
                     // Landed at final Destination
                     if (startingPoint.next == null) {
                         System.out.println(now + " - Destination Reached. Total Flight Time: " + String.format("%.2f", totalFlightTime[0]) + " hours at " + airplane.getSpeed() + "/mph");
+                        destroyAirplane();
                         this.cancel();
                         timer.cancel();
                         return;
@@ -139,4 +142,7 @@ public class FlightController {
         return distance / speed;
     }
 
+    private void destroyAirplane() {
+        FlightSimulationApplication.airplanes.remove(airplane);
+    }
 }
