@@ -18,7 +18,6 @@ const CreateStation = ({mousePosition, setCreatingStation, client} :
       body: JSON.stringify({ name: stationName, latitude: calculateLatitude(mousePosition.y), longitude: calculateLongitude(mousePosition.x) }),
     });
 
-    // setStations([...stations, { x: mousePosition.x, y: mousePosition.y, name: stationName, latitude: calculateLatitude(mousePosition.y), longitude: calculateLongitude(mousePosition.x) }]);
     setCreatingStation(false);
   }
 

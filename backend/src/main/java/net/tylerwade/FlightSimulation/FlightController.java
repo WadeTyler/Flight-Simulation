@@ -90,7 +90,7 @@ public class FlightController {
                 }
 
                 // Output current location
-                System.out.println(now + " - " + airplane.getLongitude() + ", " + airplane.getLatitude());
+//                System.out.println(now + " - " + airplane.getLongitude() + ", " + airplane.getLatitude());
 
                 // Update Location and update the time remaining
                 updateLocation(startingPoint.station, startingPoint.next.station, timeRemaining[0], flightDuration[0]);
