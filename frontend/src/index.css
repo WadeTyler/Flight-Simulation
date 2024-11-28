@@ -16,7 +16,7 @@
     url("https://assets.codepen.io/605876/noise-mask.png") 256px 50% / 256px 256px;
   mask-composite: intersect;
   animation: flicker 20s infinite linear;
-  filter: brightness(.5);
+  filter: brightness(.8);
 }
 
 @keyframes flicker {
