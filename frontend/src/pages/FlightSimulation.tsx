@@ -14,7 +14,6 @@ const FlightSimulation = () => {
   const [creatingStation, setCreatingStation] = useState<boolean>(false);
   const [stations, setStations] = useState<Station[]>([]);
 
-  const [creatingFlight, setCreatingFlight] = useState<boolean>(false);
   const [airplanes, setAirplanes] = useState<Airplane[]>([]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {

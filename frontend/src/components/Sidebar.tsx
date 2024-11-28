@@ -3,7 +3,7 @@ import { Airplane, Station } from '../types'
 import { SetStateAction, useState } from 'react';
 import CreateAirplane from './CreateAirplane';
 import { Client } from '@stomp/stompjs';
-const Sidebar = ({stations, setAirplanes, airplanes, client}: {
+const Sidebar = ({stations, airplanes, client}: {
   stations: Station[];
   setAirplanes: React.Dispatch<SetStateAction<Airplane[]>>;
   airplanes: Airplane[];

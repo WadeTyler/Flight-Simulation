@@ -36,3 +36,15 @@
 .input-bar {
   @apply p-2 border-primary border-2 rounded-lg focus:ring-0 focus:outline-none focus:shadow-lg hover:shadow-lg;
 }
+
+@keyframes pulse {
+  to {
+    transform: scale(4.5);
+    opacity: 0;
+  }
+}
+
+.pulse {
+  animation: pulse 1s infinite;
+}
+
