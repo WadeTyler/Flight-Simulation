@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
-import { MousePosition, Station } from "../types";
+import { Airplane, MousePosition, Station } from "../types";
 import CreateStation from "../components/CreateStation";
 import Sidebar from "../components/Sidebar";
 import StationComponent from "../components/StationComponent";
 import { calculateLatitude, calculateLongitude, calculateX, calculateY } from "../lib/utils";
 import { Client } from "@stomp/stompjs";
+import AirplaneComponent from "../components/AirplaneComponent";
 
 const FlightSimulation = () => {
 
@@ -12,6 +13,9 @@ const FlightSimulation = () => {
 
   const [creatingStation, setCreatingStation] = useState<boolean>(false);
   const [stations, setStations] = useState<Station[]>([]);
+
+  const [creatingFlight, setCreatingFlight] = useState<boolean>(false);
+  const [airplanes, setAirplanes] = useState<Airplane[]>([]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const worldMap = document.getElementById('world-map-container');
@@ -39,7 +43,7 @@ const FlightSimulation = () => {
       onConnect: () => {
         console.log("Connected to WebSocket via STOMP");
         stompClient.subscribe("/topic/stations", (message) => {
-          // handle incoming messages
+          // handle incoming stations
           const response = JSON.parse(message.body);
 
           response.forEach((station: Station) => {
@@ -51,8 +55,17 @@ const FlightSimulation = () => {
           setStations(response);
         });
 
+        stompClient.subscribe("/topic/airplanes", (message) => {
+          const response = JSON.parse(message.body);
+          
+          setAirplanes(response);
+        });
+
         // Load stations
         stompClient.publish({ destination: "/app/retrievestations" });
+
+        // Load airplanes
+        stompClient.publish({ destination: "/app/retrieveairplanes" });
 
         stompClient.subscribe("/topic/newstation", (message) => {
           // handle new stations
@@ -92,6 +105,11 @@ const FlightSimulation = () => {
 
   }, []);
 
+
+  useEffect(() => {
+    console.log(airplanes);
+  }, [airplanes]);
+
   return (
     <div className="bg-zinc-900 w-full h-screen flex items-center justify-center relative">
       <div className='el w-full h-screen absolute' />
@@ -104,6 +122,10 @@ const FlightSimulation = () => {
             <StationComponent station={station} key={index} />
           ))}
 
+          {/* Map Airplanes */}
+          {airplanes.map((airplane, index) => (
+            <AirplaneComponent airplane={airplane} key={index} />
+          ))}
           {/* Lon/Lat */}
           <div className="absolute bottom-2 right-2 flex gap-4">
             <p className="text-white text-xs"><span className="text-primary">Longitude: </span>{calculateLongitude(mousePosition.x)}</p>

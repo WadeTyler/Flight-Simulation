@@ -66,7 +66,6 @@ public class FlightController {
             public void run() {
                 String now = LocalDateTime.now().format(formatter);
 
-
                 // Landed at a station
                 if (timeRemaining[0] <= 0) {
                     System.out.println(now + " - Landed at " + startingPoint.next.station.getName());
@@ -92,10 +91,10 @@ public class FlightController {
 
                 // Update Location and update the time remaining
                 updateLocation(startingPoint.station, startingPoint.next.station, timeRemaining[0], flightDuration[0]);
-                timeRemaining[0] -= .5;
+                timeRemaining[0] -= .1;
             }
         };
-        timer.scheduleAtFixedRate(task, 0, 500);
+        timer.scheduleAtFixedRate(task, 0, 100);
     }
 
     // Update airplane location
@@ -139,6 +138,5 @@ public class FlightController {
         // Calculate the flight duration in hours
         return distance / speed;
     }
-
 
 }

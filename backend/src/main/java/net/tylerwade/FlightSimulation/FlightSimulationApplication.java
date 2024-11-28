@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class FlightSimulationApplication {
 
 	public static ArrayList<Station> stations = new ArrayList<>();
+	public static ArrayList<Airplane> airplanes = new ArrayList<>();
 
 	public static void main(String[] args) {
 		SpringApplication.run(FlightSimulationApplication.class, args);
@@ -38,6 +39,7 @@ public class FlightSimulationApplication {
 		RouteVertex startingPoint = new RouteVertex(virginiaStation, new RouteVertex(texasStation, new RouteVertex(californiaStation, null)));
 
 		Airplane plane1 = new Airplane("Plane 1", 150);
+		airplanes.add(plane1);
 		FlightController flight1 = new FlightController(startingPoint, plane1);
 		flight1.startFlight();
 	}
@@ -50,5 +52,11 @@ public class FlightSimulationApplication {
 		stations.add(station);
 	}
 
+	public static ArrayList<Airplane> getAirplanes() {
+		return airplanes;
+	}
 
+	public static void addAirplane(Airplane airplane) {
+		airplanes.add(airplane);
+	}
 }
