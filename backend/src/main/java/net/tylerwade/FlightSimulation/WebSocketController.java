@@ -6,6 +6,7 @@ import net.tylerwade.FlightSimulation.models.Station;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
@@ -26,7 +27,7 @@ public class WebSocketController {
         return FlightSimulationApplication.getStations();
     }
 
-    // Get all Stations and send them to the user
+    // Get all Stations and send them to the users
     @MessageMapping("/retrievestations")
     public void getStations() {
         ArrayList<Station> stations = FlightSimulationApplication.getStations();
@@ -38,31 +39,11 @@ public class WebSocketController {
     @MessageMapping("/createstation")
     public void receiveStation(Principal principal, Station station) {
 
-        // Check if a station with that name already exists
-        ArrayList<Station> stations = FlightSimulationApplication.stations;
-
-        boolean stationExists = false;
-
-        for (Station currentStation : stations) {
-            if (currentStation.getName().equalsIgnoreCase(station.getName())) {
-                System.out.println("A user tried to create a station with the same name that already exists.");
-                stationExists = true;
-                break;
-            }
-        }
-
-        if (stationExists) {
-            messagingTemplate.convertAndSendToUser(principal.getName(), "/query/error", "A station with that name already exists");
-            return;
-        }
-
         // Add station to array
         FlightSimulationApplication.addStation(station);
 
-        // Convert and Send a new station back out
-        messagingTemplate.convertAndSend("/topic/stations", stations);
-
-        System.out.println(stations);
+        // Convert and refresh stations
+        getStations();
     }
 
     // Output Flights

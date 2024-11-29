@@ -26,7 +26,7 @@ const CreateAirplane = ({setCreatingFlight, stations, client, flights}: {setCrea
 
     // Check if airplane name is taken
     for (const flight of flights) {
-      if (!flight.landed && flight.airplane.name === airplane.name) {
+      if (!flight.landed && flight.airplane.name.toLowerCase() === airplane.name.toLowerCase()) {
         return toast.error("An airplane with that name is currently in flight.");
       }
     }

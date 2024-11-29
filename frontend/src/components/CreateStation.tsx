@@ -31,7 +31,7 @@ const CreateStation = ({mousePosition, stations, setCreatingStation, client} :
 
     // Check if station name is taken
     for (const station of stations) {
-      if (station.name === stationName) return toast.error("A station with that name already exists");
+      if (station.name.toLowerCase() === stationName.toLowerCase()) return toast.error("A station with that name already exists");
     }
 
     client?.publish({
