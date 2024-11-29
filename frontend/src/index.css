@@ -5,6 +5,7 @@
 
 :root {
   --size: 20px;
+  --primary-color: #22c55e;
 }
 
 .el {
@@ -46,5 +47,21 @@
 
 .pulse {
   animation: pulse 1s infinite;
+}
+
+@keyframes flashingPrimaryText {
+  0% {
+    color: var(--primary-color);
+  }
+  50% {
+    color: white;
+  }
+  100% {
+    color: var(--primary-color);
+  }
+}
+
+.flashing-primary-text {
+  animation: flashingPrimaryText 1s infinite;
 }
 

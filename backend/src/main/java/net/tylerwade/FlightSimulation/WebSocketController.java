@@ -7,7 +7,6 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.RouteMatcher;
 
 import java.util.ArrayList;
 
@@ -53,6 +52,13 @@ public class WebSocketController {
         messagingTemplate.convertAndSend("/topic/airplanes", airplanes);
     }
 
+    // Output Flights
+    @MessageMapping("/retrieveflights")
+    public static void outputFlights() {
+        ArrayList<FlightController> flights = FlightSimulationApplication.getFlights();
+        messagingTemplate.convertAndSend("/topic/flights", flights);
+    }
+
     // Create a new flight
     @MessageMapping("/createflight")
     public void createAirplane(CreateFlightRequest flightRequest) {
@@ -82,7 +88,9 @@ public class WebSocketController {
         FlightSimulationApplication.addAirplane(airplane);
 
         // Create and Start the Flight
-        new FlightController(head, airplane);
+        FlightController flight = new FlightController(head, airplane, flightRequest.getRoute());
+
+        FlightSimulationApplication.flights.add(flight);
 
     }
 }

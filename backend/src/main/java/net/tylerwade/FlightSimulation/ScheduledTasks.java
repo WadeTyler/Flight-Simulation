@@ -7,6 +7,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 @Component
 public class ScheduledTasks {
@@ -14,7 +15,7 @@ public class ScheduledTasks {
     private static final Logger log = LoggerFactory.getLogger(ScheduledTasks.class);
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
-    private boolean sentEmptyList = false;
+    private boolean sentEmptyAirplanes = false;
 
     @Scheduled(fixedRate = 100)
     public void reportCurrentAirplanes() {
@@ -22,15 +23,22 @@ public class ScheduledTasks {
         if (!FlightSimulationApplication.airplanes.isEmpty()) {
             WebSocketController.outputAirplanes();
 
-            sentEmptyList = false;
+            sentEmptyAirplanes = false;
         }
 
         // Output empty list if empty one time
-        if (FlightSimulationApplication.airplanes.isEmpty() && !sentEmptyList) {
+        if (FlightSimulationApplication.airplanes.isEmpty() && !sentEmptyAirplanes) {
             WebSocketController.outputAirplanes();
 
-            sentEmptyList = true;
+            sentEmptyAirplanes = true;
         }
+    }
+
+    @Scheduled(fixedRate = 5000)
+    public void reportCurrentFlights() {
+        // Output current Flights to the websocket
+        ArrayList<FlightController> flights = FlightSimulationApplication.getFlights();
+        WebSocketController.outputFlights();
     }
 
 }

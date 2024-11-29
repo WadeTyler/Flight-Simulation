@@ -24,21 +24,31 @@ public class FlightController {
     private RouteVertex startingPoint;
 
     // Airplane that the controller controls
-    private Airplane airplane;
+    private final Airplane airplane;
+
+    private boolean landed = false;
+    private LocalDateTime startTime;
+    private LocalDateTime landedTime;
+    private LocalDateTime lastTimestamp;
+    private double totalFlightDuration = 0;
+    private ArrayList<Station> route;
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     // Constructor
-    public FlightController(RouteVertex startingPoint, Airplane airplane) {
+    public FlightController(RouteVertex startingPoint, Airplane airplane, ArrayList<Station> route) {
         this.startingPoint = startingPoint;
         this.airplane = airplane;
+        this.route = route;
 
         startFlight();
     }
 
-
-    // Traverse the route. Start by calculating the flightduration between the start station and the second station. Set a timerTask to run every .5-second to update the plane's current location. Update to websocket.
+    // Traverse the route.
     public void startFlight() {
+
+        startTime = LocalDateTime.now();
+        lastTimestamp = LocalDateTime.now();
 
         // Announce starting route
         System.out.println("Starting Route:");
@@ -77,7 +87,13 @@ public class FlightController {
                     // Landed at final Destination
                     if (startingPoint.next == null) {
                         System.out.println(now + " - Destination Reached. Total Flight Time: " + String.format("%.2f", totalFlightTime[0]) + " hours at " + airplane.getSpeed() + "/mph");
-                        destroyAirplane();
+
+                        totalFlightDuration = totalFlightTime[0];
+                        landed = true;
+                        landedTime = LocalDateTime.now();
+                        lastTimestamp = LocalDateTime.now();
+
+                        destroyPlane();
                         this.cancel();
                         timer.cancel();
                         return;
@@ -117,7 +133,6 @@ public class FlightController {
     }
 
 
-
     /* Calculates the flight duration between 2 stations by using the haversine formula  */
     public static double calculateFlightDuration(Station startStation, Station endStation, int speed) {
         final int EARTH_RADIUS_MILES = 3959;
@@ -142,7 +157,35 @@ public class FlightController {
         return distance / speed;
     }
 
-    private void destroyAirplane() {
-        FlightSimulationApplication.airplanes.remove(airplane);
+    private void destroyPlane() {
+        FlightSimulationApplication.airplanes.remove(this.airplane);
+    }
+
+    public Airplane getAirplane() {
+        return airplane;
+    }
+
+    public boolean isLanded() {
+        return landed;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public LocalDateTime getLandedTime() {
+        return landedTime;
+    }
+
+    public double getTotalFlightDuration() {
+        return totalFlightDuration;
+    }
+
+    public LocalDateTime getLastTimestamp() {
+        return lastTimestamp;
+    }
+
+    public ArrayList<Station> getRoute() {
+        return route;
     }
 }

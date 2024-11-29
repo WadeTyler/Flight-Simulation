@@ -1,21 +1,42 @@
-import React, { SetStateAction } from "react";
+import React, { SetStateAction, useState } from "react";
 import { MousePosition, Station } from "../types"
 import { CloseButton } from "./CloseButton";
 import { calculateLatitude, calculateLongitude, calculateX, calculateY } from "../lib/utils";
 import { Client } from "@stomp/stompjs";
+import toast from "react-hot-toast";
 
-const CreateStation = ({mousePosition, setCreatingStation, client} :
+const CreateStation = ({mousePosition, stations, setCreatingStation, client} :
    { mousePosition: MousePosition; stations: Station[]; setStations: React.Dispatch<SetStateAction<Station[]>>; setCreatingStation: React.Dispatch<SetStateAction<boolean>>; client: Client | null;
    }) => {
 
   const [stationName, setStationName] = React.useState<string>('');
+  
+  const [longitude, setLongitude] = useState<number>(calculateLongitude(mousePosition.x));
+  const [latitude, setLatitude] = useState<number>(calculateLatitude(mousePosition.y));
 
+  
+  // Submit form for creation
   const handleCreateStation = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // Check longitude in range
+    if (longitude > 180 || longitude < -180) {
+      return toast.error("Longitude must be between -180 and 180");
+    }
+
+    // Check latitude in range
+    if (latitude > 90 || latitude < -90) {
+      return toast.error("Latitude must be between -90 and 90");
+    }
+
+    // Check if station name is taken
+    for (const station of stations) {
+      if (station.name === stationName) return toast.error("A station with that name already exists");
+    }
+
     client?.publish({
       destination: "/app/createstation",
-      body: JSON.stringify({ name: stationName, latitude: calculateLatitude(mousePosition.y), longitude: calculateLongitude(mousePosition.x) }),
+      body: JSON.stringify({ name: stationName, latitude: latitude, longitude: longitude }),
     });
 
     setCreatingStation(false);
@@ -35,10 +56,14 @@ const CreateStation = ({mousePosition, setCreatingStation, client} :
             <input type="text" placeholder="Station Name" className="input-bar" required onChange={(e) => setStationName(e.target.value)}/>
           </div>
           <div className="flex gap-2">
-            <p><span className="text-primary">Longitude: </span>{calculateLongitude(mousePosition.x)}</p>
-            <p><span className="text-primary">Latitude: </span>{calculateLatitude(mousePosition.y)}</p>
-            <p><span className="text-primary">X: </span>{calculateX(calculateLongitude(mousePosition.x))} - {mousePosition.x}</p>
-            <p><span className="text-primary">Y: </span>{calculateY(calculateLatitude(mousePosition.y))} - {mousePosition.y}</p>
+            <div className="flex flex-col gap-1 w-full">
+              <p className="text-primary">Longitude</p>
+              <input type="number" className="input-bar" placeholder="Longitude" value={longitude} onChange={(e) => setLongitude(Number(e.target.value)) }/>
+            </div>
+            <div className="flex flex-col gap-1 w-full">
+              <p className="text-primary">Latitude</p>
+              <input type="number" className="input-bar" placeholder="Latitude" value={latitude} onChange={(e) => setLatitude(Number(e.target.value)) }/>
+            </div>
           </div>
             <button className="bg-primary text-white p-2 rounded-lg">
               Create Station

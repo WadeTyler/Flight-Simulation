@@ -6,9 +6,7 @@ import net.tylerwade.FlightSimulation.models.Station;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.util.RouteMatcher;
 
-import java.sql.Array;
 import java.util.ArrayList;
 
 @SpringBootApplication
@@ -17,6 +15,7 @@ public class FlightSimulationApplication {
 
 	public static ArrayList<Station> stations = new ArrayList<>();
 	public static ArrayList<Airplane> airplanes = new ArrayList<>();
+	public static ArrayList<FlightController> flights = new ArrayList<>();
 
 	public static void main(String[] args) {
 		SpringApplication.run(FlightSimulationApplication.class, args);
@@ -30,17 +29,18 @@ public class FlightSimulationApplication {
 		stations.add(californiaStation);
 		stations.add(texasStation);
 
-		System.out.println(virginiaStation);
-		System.out.println(californiaStation);
-		System.out.println(texasStation);
+		ArrayList<Station> route = new ArrayList<>();
+		route.add(virginiaStation);
+		route.add(californiaStation);
+		route.add(texasStation);
 
-		// Example
 		// Route goes from virginia -> texas -> california
 		RouteVertex startingPoint = new RouteVertex(virginiaStation, new RouteVertex(texasStation, new RouteVertex(californiaStation, null)));
 
 		Airplane plane1 = new Airplane("Plane 1", 150);
 		airplanes.add(plane1);
-		FlightController flight1 = new FlightController(startingPoint, plane1);
+		FlightController flight1 = new FlightController(startingPoint, plane1, route);
+		addFlight(flight1);
 	}
 
 	public static ArrayList<Station> getStations() {
@@ -57,5 +57,13 @@ public class FlightSimulationApplication {
 
 	public static void addAirplane(Airplane airplane) {
 		airplanes.add(airplane);
+	}
+
+	public static ArrayList<FlightController> getFlights() {
+		return flights;
+	}
+
+	public static void addFlight(FlightController flight) {
+		flights.add(flight);
 	}
 }

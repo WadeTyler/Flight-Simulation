@@ -17,3 +17,13 @@ export type Airplane = {
   latitude: number;
   speed: number;
 }
+
+export type Flight = {
+  airplane: Airplane;
+  route: Station[];
+  totalFlightDuration: number;
+  landed: boolean;
+  lastTimestamp: string;
+  startTime: string;
+  landedTime: string;
+}

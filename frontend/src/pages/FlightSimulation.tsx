@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Airplane, MousePosition, Station } from "../types";
+import { Airplane, Flight, MousePosition, Station } from "../types";
 import CreateStation from "../components/CreateStation";
 import Sidebar from "../components/Sidebar";
 import StationComponent from "../components/StationComponent";
@@ -15,6 +15,7 @@ const FlightSimulation = () => {
   const [stations, setStations] = useState<Station[]>([]);
 
   const [airplanes, setAirplanes] = useState<Airplane[]>([]);
+  const [flights, setFlights] = useState<Flight[]>([]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const worldMap = document.getElementById('world-map-container');
@@ -36,9 +37,9 @@ const FlightSimulation = () => {
   useEffect(() => {
     const stompClient = new Client({
       brokerURL: "ws://localhost:8080/ws",
-      debug: (str) => {
-        console.log(str);
-      },
+      // debug: (str) => {
+      //   console.log(str);
+      // },
       onConnect: () => {
         console.log("Connected to WebSocket via STOMP");
         stompClient.subscribe("/topic/stations", (message) => {
@@ -59,6 +60,15 @@ const FlightSimulation = () => {
           
           setAirplanes(response);
         });
+
+        stompClient.subscribe("/topic/flights", (message) => {
+          const response = JSON.parse(message.body);
+
+          // Debug
+          console.log(response);
+
+          setFlights(response);
+        })
 
         // Load stations
         stompClient.publish({ destination: "/app/retrievestations" });
@@ -107,33 +117,39 @@ const FlightSimulation = () => {
 
   return (
     <div className="bg-zinc-900 w-full h-screen flex items-center justify-center relative">
+      
       <div className='el w-full h-screen absolute' />
-      <Sidebar stations={stations} airplanes={airplanes} setAirplanes={setAirplanes} client={client} />
-        <div className="z-20 flex items-center justify-center w-full h-full relative">
 
-          <img src="/world-map7.png" alt="World Map Image" className="relative w-full h-full" id="world-map-container" onMouseMove={handleMouseMove} onClick={() => setCreatingStation(true)} />
-          {/* Map Stations */}
-          {stations.map((station, index) => (
-            <StationComponent station={station} key={index} />
-          ))}
+      <Sidebar stations={stations} airplanes={airplanes} setAirplanes={setAirplanes} client={client} flights={flights} />
 
-          {/* Map Airplanes */}
-          {airplanes.map((airplane, index) => (
-            <AirplaneComponent airplane={airplane} key={index} />
-          ))}
-          {/* Lon/Lat */}
-          <div className="absolute bottom-2 right-2 flex gap-4">
-            <p className="text-white text-xs"><span className="text-primary">Longitude: </span>{calculateLongitude(mousePosition.x)}</p>
-            <p className="text-white text-xs"><span className="text-primary">Latitude: </span>{calculateLatitude(mousePosition.y)}</p>
-          </div>
+      <div className="z-20 flex items-center justify-center w-full h-full relative">
 
-          <div className="absolute bottom-2 left-2 flex gap-4">
-            <p className="text-white text-xs"><span className="text-primary">X: </span>{mousePosition.x}</p>
-            <p className="text-white text-xs"><span className="text-primary">Y: </span>{mousePosition.y}</p>
-          </div>
+        <img src="/world-map7.png" alt="World Map Image" className="relative w-full h-full" id="world-map-container" onMouseMove={handleMouseMove} onClick={() => setCreatingStation(true)} />
+        {/* Map Stations */}
+        {stations.map((station, index) => (
+          <StationComponent station={station} key={index} />
+        ))}
+
+        {/* Map Airplanes */}
+        {airplanes.map((airplane, index) => (
+          <AirplaneComponent airplane={airplane} key={index} />
+        ))}
+        {/* Lon/Lat */}
+        <div className="absolute bottom-2 right-2 flex gap-4">
+          <p className="text-white text-xs"><span className="text-primary">Longitude: </span>{calculateLongitude(mousePosition.x)}</p>
+          <p className="text-white text-xs"><span className="text-primary">Latitude: </span>{calculateLatitude(mousePosition.y)}</p>
         </div>
+
+        <div className="absolute bottom-2 left-2 flex gap-4">
+          <p className="text-white text-xs"><span className="text-primary">X: </span>{mousePosition.x}</p>
+          <p className="text-white text-xs"><span className="text-primary">Y: </span>{mousePosition.y}</p>
+        </div>
+      </div>
+
       
       {creatingStation && <CreateStation mousePosition={mousePosition} stations={stations} setStations={setStations} setCreatingStation={setCreatingStation} client={client} />}
+
+      
 
     </div>
   )
