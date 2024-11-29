@@ -8,6 +8,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 
 @Controller
@@ -35,21 +36,33 @@ public class WebSocketController {
 
     // Create a new stations and send it to all users
     @MessageMapping("/createstation")
-    public void receiveStation(Station station) {
+    public void receiveStation(Principal principal, Station station) {
+
+        // Check if a station with that name already exists
+        ArrayList<Station> stations = FlightSimulationApplication.stations;
+
+        boolean stationExists = false;
+
+        for (Station currentStation : stations) {
+            if (currentStation.getName().equalsIgnoreCase(station.getName())) {
+                System.out.println("A user tried to create a station with the same name that already exists.");
+                stationExists = true;
+                break;
+            }
+        }
+
+        if (stationExists) {
+            messagingTemplate.convertAndSendToUser(principal.getName(), "/query/error", "A station with that name already exists");
+            return;
+        }
+
         // Add station to array
         FlightSimulationApplication.addStation(station);
 
-        System.out.println("New Station Created: " + station);
-
         // Convert and Send a new station back out
-        messagingTemplate.convertAndSend("/topic/newstation", station);
-    }
+        messagingTemplate.convertAndSend("/topic/stations", stations);
 
-    // Get all airplanes and send back to the user
-    @MessageMapping("/retrieveairplanes")
-    public static void outputAirplanes() {
-        ArrayList<Airplane> airplanes = FlightSimulationApplication.getAirplanes();
-        messagingTemplate.convertAndSend("/topic/airplanes", airplanes);
+        System.out.println(stations);
     }
 
     // Output Flights
@@ -83,9 +96,7 @@ public class WebSocketController {
         }
 
         // Add airplane
-
         Airplane airplane = flightRequest.getAirplane();
-        FlightSimulationApplication.addAirplane(airplane);
 
         // Create and Start the Flight
         FlightController flight = new FlightController(head, airplane, flightRequest.getRoute());

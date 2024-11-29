@@ -4,6 +4,7 @@ export type Station = {
   latitude: number;
   longitude: number;
   name: string;
+  timestamp: string;
 }
 
 export type MousePosition = {

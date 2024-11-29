@@ -1,11 +1,11 @@
 import { SetStateAction, useEffect, useState } from "react"
 import { CloseButton } from "./CloseButton"
-import { Airplane, Station } from "../types";
+import { Airplane, Flight, Station } from "../types";
 import toast from "react-hot-toast";
 import { Client } from "@stomp/stompjs";
 
 
-const CreateAirplane = ({setCreatingFlight, stations, airplanes, client}: {setCreatingFlight: React.Dispatch<SetStateAction<boolean>>; stations: Station[]; airplanes: Airplane[]; client: Client | null;}) => {
+const CreateAirplane = ({setCreatingFlight, stations, client, flights}: {setCreatingFlight: React.Dispatch<SetStateAction<boolean>>; stations: Station[]; client: Client | null; flights: Flight[];}) => {
 
   const [route, setRoute] = useState<Station[]>([]);
   const [airplane, setAirplane] = useState<Airplane>({
@@ -25,9 +25,9 @@ const CreateAirplane = ({setCreatingFlight, stations, airplanes, client}: {setCr
     }
 
     // Check if airplane name is taken
-    for (const plane of airplanes) {
-      if (plane.name === airplane?.name) {
-        return toast.error("Airplane name already taken.");
+    for (const flight of flights) {
+      if (!flight.landed && flight.airplane.name === airplane.name) {
+        return toast.error("An airplane with that name is currently in flight.");
       }
     }
 

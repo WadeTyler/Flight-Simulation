@@ -89,7 +89,6 @@ public class FlightController {
                         landedTime = LocalDateTime.now();
                         lastTimestamp = LocalDateTime.now();
 
-                        destroyPlane();
                         this.cancel();
                         timer.cancel();
                         return;
@@ -154,10 +153,6 @@ public class FlightController {
 
         // Calculate the flight duration in hours
         return distance / speed;
-    }
-
-    private void destroyPlane() {
-        FlightSimulationApplication.airplanes.remove(this.airplane);
     }
 
     public Airplane getAirplane() {

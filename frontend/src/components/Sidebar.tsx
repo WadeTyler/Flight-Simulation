@@ -1,12 +1,10 @@
 import { IconPlaneDeparture } from '@tabler/icons-react'
-import { Airplane, Flight, Station } from '../types'
-import { SetStateAction, useState } from 'react';
+import { Flight, Station } from '../types'
+import { useState } from 'react';
 import CreateAirplane from './CreateAirplane';
 import { Client } from '@stomp/stompjs';
-const Sidebar = ({stations, airplanes, client, flights}: {
+const Sidebar = ({stations, client, flights}: {
   stations: Station[];
-  setAirplanes: React.Dispatch<SetStateAction<Airplane[]>>;
-  airplanes: Airplane[];
   client: Client | null;
   flights: Flight[];
 }) => {
@@ -51,7 +49,7 @@ const Sidebar = ({stations, airplanes, client, flights}: {
       </div>
 
 
-      {creatingFlight && <CreateAirplane setCreatingFlight={setCreatingFlight} stations={stations} airplanes={airplanes} client={client} /> }
+      {creatingFlight && <CreateAirplane setCreatingFlight={setCreatingFlight} stations={stations} client={client} flights={flights} /> }
 
     </div>
   )

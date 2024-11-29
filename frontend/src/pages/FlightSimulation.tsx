@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Airplane, Flight, MousePosition, Station } from "../types";
+import { Flight, MousePosition, Station } from "../types";
 import CreateStation from "../components/CreateStation";
 import Sidebar from "../components/Sidebar";
 import StationComponent from "../components/StationComponent";
@@ -7,6 +7,7 @@ import { calculateLatitude, calculateLongitude, calculateX, calculateY } from ".
 import { Client } from "@stomp/stompjs";
 import AirplaneComponent from "../components/AirplaneComponent";
 import LocationStampComponent from "../components/LocationStampComponent";
+import toast from "react-hot-toast";
 
 const FlightSimulation = () => {
 
@@ -15,7 +16,6 @@ const FlightSimulation = () => {
   const [creatingStation, setCreatingStation] = useState<boolean>(false);
   const [stations, setStations] = useState<Station[]>([]);
 
-  const [airplanes, setAirplanes] = useState<Airplane[]>([]);
   const [flights, setFlights] = useState<Flight[]>([]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -43,6 +43,7 @@ const FlightSimulation = () => {
       // },
       onConnect: () => {
         console.log("Connected to WebSocket via STOMP");
+
         stompClient.subscribe("/topic/stations", (message) => {
           // handle incoming stations
           const response = JSON.parse(message.body);
@@ -54,12 +55,6 @@ const FlightSimulation = () => {
 
           console.log(response);
           setStations(response);
-        });
-
-        stompClient.subscribe("/topic/airplanes", (message) => {
-          const response = JSON.parse(message.body);
-          
-          setAirplanes(response);
         });
 
         stompClient.subscribe("/topic/flights", (message) => {
@@ -77,23 +72,10 @@ const FlightSimulation = () => {
         // Load airplanes
         stompClient.publish({ destination: "/app/retrieveairplanes" });
 
-        stompClient.subscribe("/topic/newstation", (message) => {
-          // handle new stations
-          const response = JSON.parse(message.body);
-          console.log(response);
+        stompClient.subscribe("/queue/error", (message) => {
+          toast.error(JSON.parse(message.body));
+        })
 
-          const newStation: Station = {
-            name: response.name,
-            longitude: response.longitude,
-            latitude: response.latitude,
-            x: calculateX(response.longitude),
-            y: calculateY(response.latitude)
-          };
-
-          console.log(newStation);
-
-          setStations(prevStations => [...prevStations, newStation]);
-        });
       },
       onWebSocketError: (error) => {
         console.log("Error: ", error);
@@ -121,7 +103,7 @@ const FlightSimulation = () => {
       
       <div className='el w-full h-screen absolute' />
 
-      <Sidebar stations={stations} airplanes={airplanes} setAirplanes={setAirplanes} client={client} flights={flights} />
+      <Sidebar stations={stations} client={client} flights={flights} />
 
       <div className="z-20 flex items-center justify-center w-full h-full relative">
 
@@ -132,16 +114,18 @@ const FlightSimulation = () => {
         ))}
 
         {/* Map Airplanes */}
-        {airplanes.map((airplane, index) => (
-          <AirplaneComponent airplane={airplane} key={index} />
-        ))}
+        {flights.map((flight, index) => {
+          if (!flight.landed) return (
+            <AirplaneComponent airplane={flight.airplane} key={index} />
+          )  
+        })}
 
         {/* Map Location Stamps */}
         {flights.map((flight) => {
           
           if (!flight.landed) return (
             flight.locationStamps.map((locationStamp, index) => (
-              <LocationStampComponent locationStamp={locationStamp} key={index} />  
+              <LocationStampComponent locationStamp={locationStamp} key={index} />
           )))
         })}
 

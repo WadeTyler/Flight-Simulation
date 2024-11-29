@@ -1,28 +1,15 @@
 package net.tylerwade.FlightSimulation.models;
 
-import net.tylerwade.FlightSimulation.FlightSimulationApplication;
-import org.springframework.stereotype.Component;
-
 public class Airplane {
 
-    private int id;
     private String name;
     private int speed;
     private double longitude;
     private double latitude;
 
     public Airplane (String name, int speed) {
-        this.id = FlightSimulationApplication.airplanes.size();
         this.name = name;
         this.speed = speed;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -59,6 +46,6 @@ public class Airplane {
 
     @Override
     public String toString() {
-        return "Airplane " + id + ": " + name + " - Speed: " + speed;
+        return  name + " - Speed: " + speed;
     }
 }
