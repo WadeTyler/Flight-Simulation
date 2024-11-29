@@ -88,7 +88,7 @@ public class FlightController {
                         landed = true;
                         landedTime = LocalDateTime.now();
                         lastTimestamp = LocalDateTime.now();
-                        
+
                         destroyPlane();
                         this.cancel();
                         timer.cancel();
