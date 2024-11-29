@@ -6,11 +6,6 @@ package net.tylerwade.FlightSimulation;
 import net.tylerwade.FlightSimulation.models.Airplane;
 import net.tylerwade.FlightSimulation.models.RouteVertex;
 import net.tylerwade.FlightSimulation.models.Station;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -32,6 +27,7 @@ public class FlightController {
     private LocalDateTime lastTimestamp;
     private double totalFlightDuration = 0;
     private ArrayList<Station> route;
+    private ArrayList<LocationStamp> locationStamps = new ArrayList<>();
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -92,7 +88,7 @@ public class FlightController {
                         landed = true;
                         landedTime = LocalDateTime.now();
                         lastTimestamp = LocalDateTime.now();
-
+                        
                         destroyPlane();
                         this.cancel();
                         timer.cancel();
@@ -130,6 +126,9 @@ public class FlightController {
         airplane.setLatitude(currentLatitude);
         airplane.setLongitude(currentLongitude);
 
+
+        // Add a location stamp
+        locationStamps.add(new LocationStamp(currentLongitude, currentLatitude));
     }
 
 
@@ -187,5 +186,33 @@ public class FlightController {
 
     public ArrayList<Station> getRoute() {
         return route;
+    }
+
+    public ArrayList<LocationStamp> getLocationStamps() {
+        return locationStamps;
+    }
+}
+
+class LocationStamp {
+    private LocalDateTime timestamp;
+    private double longitude;
+    private double latitude;
+
+    public LocationStamp(double longitude, double latitude) {
+        this.timestamp = LocalDateTime.now();
+        this.longitude = longitude;
+        this.latitude = latitude;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
     }
 }

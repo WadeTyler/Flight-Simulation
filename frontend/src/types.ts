@@ -26,4 +26,8 @@ export type Flight = {
   lastTimestamp: string;
   startTime: string;
   landedTime: string;
+  locationStamps: {
+    longitude: number;
+    latitude: number;
+  }[];
 }

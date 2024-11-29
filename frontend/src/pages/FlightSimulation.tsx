@@ -6,6 +6,7 @@ import StationComponent from "../components/StationComponent";
 import { calculateLatitude, calculateLongitude, calculateX, calculateY } from "../lib/utils";
 import { Client } from "@stomp/stompjs";
 import AirplaneComponent from "../components/AirplaneComponent";
+import LocationStampComponent from "../components/LocationStampComponent";
 
 const FlightSimulation = () => {
 
@@ -134,6 +135,16 @@ const FlightSimulation = () => {
         {airplanes.map((airplane, index) => (
           <AirplaneComponent airplane={airplane} key={index} />
         ))}
+
+        {/* Map Location Stamps */}
+        {flights.map((flight) => {
+          
+          if (!flight.landed) return (
+            flight.locationStamps.map((locationStamp, index) => (
+              <LocationStampComponent locationStamp={locationStamp} key={index} />  
+          )))
+        })}
+
         {/* Lon/Lat */}
         <div className="absolute bottom-2 right-2 flex gap-4">
           <p className="text-white text-xs"><span className="text-primary">Longitude: </span>{calculateLongitude(mousePosition.x)}</p>

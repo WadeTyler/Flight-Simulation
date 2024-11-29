@@ -1,7 +1,7 @@
 import React, { SetStateAction, useState } from "react";
 import { MousePosition, Station } from "../types"
 import { CloseButton } from "./CloseButton";
-import { calculateLatitude, calculateLongitude, calculateX, calculateY } from "../lib/utils";
+import { calculateLatitude, calculateLongitude } from "../lib/utils";
 import { Client } from "@stomp/stompjs";
 import toast from "react-hot-toast";
 
