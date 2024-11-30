@@ -19,7 +19,7 @@ public class ScheduledTasks {
     boolean sentEmptyFlights = false;
 
     // Output current Flights to the websocket
-    @Scheduled(fixedRate = 100)
+    @Scheduled(fixedRate = 1000)
     public void reportCurrentFlights() {
         ArrayList<FlightController> flights = FlightSimulationApplication.getFlights();
 
