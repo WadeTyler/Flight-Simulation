@@ -16,12 +16,30 @@ public class ScheduledTasks {
     private static final Logger log = LoggerFactory.getLogger(ScheduledTasks.class);
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
+    boolean sentEmptyFlights = false;
+
     // Output current Flights to the websocket
     @Scheduled(fixedRate = 100)
     public void reportCurrentFlights() {
         ArrayList<FlightController> flights = FlightSimulationApplication.getFlights();
 
-        if (!flights.isEmpty()) WebSocketController.outputFlights();
+        boolean allFlightsLanded = true;
+        for(FlightController f : flights) {
+            if (!f.isLanded()) {
+                allFlightsLanded = false;
+                break;
+            }
+        }
+
+        if (!flights.isEmpty() && !allFlightsLanded) {
+            WebSocketController.outputFlights();
+            sentEmptyFlights = false;
+        }
+
+        else if (!sentEmptyFlights) {
+            WebSocketController.outputFlights();
+            sentEmptyFlights = true;
+        }
     }
 
     // Every 1 minute delete flights that landed more than 5 minutes ago

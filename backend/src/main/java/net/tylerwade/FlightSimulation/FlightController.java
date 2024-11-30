@@ -132,7 +132,6 @@ public class FlightController {
         airplane.setLatitude(currentLatitude);
         airplane.setLongitude(currentLongitude);
         airplane.setRotation(angle);
-        System.out.println(angle);
 
         if (locationStamps.size() >= 30) {
             locationStamps.remove(0);
