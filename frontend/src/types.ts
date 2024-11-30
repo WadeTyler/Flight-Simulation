@@ -17,6 +17,7 @@ export type Airplane = {
   longitude: number;
   latitude: number;
   speed: number;
+  rotation: number;
 }
 
 export type Flight = {

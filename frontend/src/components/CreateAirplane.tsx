@@ -12,7 +12,8 @@ const CreateAirplane = ({setCreatingFlight, stations, client, flights}: {setCrea
     name: "",
     speed: 0,
     longitude: 0,
-    latitude: 0
+    latitude: 0,
+    rotation: 0
   });
 
 

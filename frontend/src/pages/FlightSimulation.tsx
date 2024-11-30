@@ -57,6 +57,17 @@ const FlightSimulation = () => {
           setStations(response);
         });
 
+        stompClient.subscribe("/topic/newstation", (message) => {
+          const response = JSON.parse(message.body);
+          console.log(response);
+
+          response.x = calculateX(response.longitude);
+          response.y = calculateY(response.latitude);
+
+          setStations(prev => [...prev, response]);
+          toast.success(`Station ${response.name} has been added.`);
+        })
+
         stompClient.subscribe("/topic/flights", (message) => {
           const response = JSON.parse(message.body);
 
@@ -113,20 +124,34 @@ const FlightSimulation = () => {
           <StationComponent station={station} key={index} />
         ))}
 
-        {/* Map Airplanes */}
+        {/* Map Airplanes and Location Stamps */}
         {flights.map((flight, index) => {
-          if (!flight.landed) return (
-            <AirplaneComponent airplane={flight.airplane} key={index} />
-          )  
-        })}
 
-        {/* Map Location Stamps */}
-        {flights.map((flight) => {
-          
+          const colors = [
+            '#FF5733', // Red
+            '#33FF57', // Green
+            '#3357FF', // Blue
+            '#FF33A1', // Pink
+            '#FF8C33', // Orange
+            '#33FFF5', // Cyan
+            '#8D33FF', // Purple
+            '#FFD733', // Yellow
+            '#33FF8C', // Lime
+            '#FF3333',  // Bright Red
+            '#FF33FF'  // Magenta
+          ];
+
+          // Get a color 1 - 10
+          const color = colors[(index % 10)];
+
           if (!flight.landed) return (
-            flight.locationStamps.map((locationStamp, index) => (
-              <LocationStampComponent locationStamp={locationStamp} key={index} />
-          )))
+            <div className="" key={index}>
+              {flight.locationStamps.map((locationStamp, locationStampIndex) => (
+                <LocationStampComponent locationStamp={locationStamp} color={color} key={locationStampIndex} />
+              ))}
+              <AirplaneComponent airplane={flight.airplane} color={color} />
+            </div>
+          )
         })}
 
         {/* Lon/Lat */}

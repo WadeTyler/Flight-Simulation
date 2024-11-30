@@ -6,6 +6,7 @@ public class Airplane {
     private int speed;
     private double longitude;
     private double latitude;
+    private double rotation;
 
     public Airplane (String name, int speed) {
         this.name = name;
@@ -42,6 +43,14 @@ public class Airplane {
 
     public void setLatitude(double latitude) {
         this.latitude = latitude;
+    }
+
+    public double getRotation() {
+        return rotation;
+    }
+
+    public void setRotation(double rotation) {
+        this.rotation = rotation;
     }
 
     @Override

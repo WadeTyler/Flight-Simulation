@@ -21,15 +21,9 @@ public class WebSocketController {
         WebSocketController.messagingTemplate = messagingTemplate;
     }
 
-    @MessageMapping("/stations")
-    @SendTo("/topic/stations")
-    public ArrayList<Station> sendStations() {
-        return FlightSimulationApplication.getStations();
-    }
-
-    // Get all Stations and send them to the users
+    // Get all Stations and send them to the users. Should only be published once on load.
     @MessageMapping("/retrievestations")
-    public void getStations() {
+    public void retrieveStations() {
         ArrayList<Station> stations = FlightSimulationApplication.getStations();
         System.out.println("Retrieving Stations");
         messagingTemplate.convertAndSend("/topic/stations", stations);
@@ -43,7 +37,7 @@ public class WebSocketController {
         FlightSimulationApplication.addStation(station);
 
         // Convert and refresh stations
-        getStations();
+        messagingTemplate.convertAndSend("/topic/newstation", station);
     }
 
     // Output Flights
@@ -83,7 +77,7 @@ public class WebSocketController {
         FlightController flight = new FlightController(head, airplane, flightRequest.getRoute());
 
         FlightSimulationApplication.flights.add(flight);
-
+        
     }
 }
 

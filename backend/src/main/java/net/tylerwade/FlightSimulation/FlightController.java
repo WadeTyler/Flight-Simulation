@@ -3,6 +3,7 @@
 
 package net.tylerwade.FlightSimulation;
 
+import ch.qos.logback.classic.pattern.ClassOfCallerConverter;
 import net.tylerwade.FlightSimulation.models.Airplane;
 import net.tylerwade.FlightSimulation.models.RouteVertex;
 import net.tylerwade.FlightSimulation.models.Station;
@@ -119,14 +120,23 @@ public class FlightController {
         double progress = elapsedTime / flightDuration;
 
         double currentLatitude = startingStation.getLatitude() + (endStation.getLatitude() - startingStation.getLatitude()) * progress;
-
         double currentLongitude = startingStation.getLongitude() + (endStation.getLongitude() - startingStation.getLongitude()) * progress;
+
+        double deltaX = endStation.getLongitude() - startingStation.getLongitude();
+        double deltaY = endStation.getLatitude() - startingStation.getLatitude();
+        double angle = Math.toDegrees(Math.atan2(deltaY, deltaX));
+        if (angle < 0) {
+            angle += 360;
+        }
 
         airplane.setLatitude(currentLatitude);
         airplane.setLongitude(currentLongitude);
+        airplane.setRotation(angle);
+        System.out.println(angle);
 
-
-        // Add a location stamp
+        if (locationStamps.size() >= 30) {
+            locationStamps.remove(0);
+        }
         locationStamps.add(new LocationStamp(currentLongitude, currentLatitude));
     }
 
