@@ -8,6 +8,7 @@ import { Client } from "@stomp/stompjs";
 import AirplaneComponent from "../components/AirplaneComponent";
 import LocationStampComponent from "../components/LocationStampComponent";
 import toast from "react-hot-toast";
+import Background from "../components/Background";
 
 const FlightSimulation = () => {
 
@@ -112,7 +113,7 @@ const FlightSimulation = () => {
   return (
     <div className="bg-zinc-900 w-full h-screen flex items-center justify-center relative">
       
-      <div className='el w-full h-screen absolute' />
+      <Background />
 
       <Sidebar stations={stations} client={client} flights={flights} />
 

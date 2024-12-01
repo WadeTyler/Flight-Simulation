@@ -1,8 +1,13 @@
+import Background from "../components/Background"
+import Hero from "../components/Hero"
 
 
 const Home = () => {
   return (
-    <div>Home</div>
+    <div className="w-full min-h-screen flex items-center flex-col">
+      
+      <Hero />
+    </div>
   )
 }
 

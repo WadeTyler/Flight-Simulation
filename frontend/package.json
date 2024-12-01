@@ -10,13 +10,20 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-three/drei": "^9.119.0",
+    "@react-three/fiber": "^8.17.10",
     "@stomp/stompjs": "^7.0.0",
     "@tabler/icons-react": "^3.22.0",
+    "clsx": "^2.1.1",
+    "framer-motion": "^11.12.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hot-toast": "^2.4.1",
     "react-router-dom": "^7.0.1",
-    "sockjs-client": "^1.6.1"
+    "sockjs-client": "^1.6.1",
+    "tailwind-merge": "^2.5.5",
+    "three": "^0.171.0",
+    "three-globe": "^2.35.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",
