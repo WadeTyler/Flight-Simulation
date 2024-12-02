@@ -1,14 +1,15 @@
-import { IconPlaneDeparture } from '@tabler/icons-react'
+import { IconMap, IconPlaneDeparture, IconWorld } from '@tabler/icons-react'
 import { Flight, Station } from '../types'
-import { useState } from 'react';
+import { SetStateAction, useState } from 'react';
 import CreateAirplane from './CreateAirplane';
 import { Client } from '@stomp/stompjs';
-const Sidebar = ({stations, client, flights}: {
+const Sidebar = ({stations, client, flights, isFlatMode, setIsFlatMode}: {
   stations: Station[];
   client: Client | null;
   flights: Flight[];
+  isFlatMode: boolean;
+  setIsFlatMode: React.Dispatch<SetStateAction<boolean>>;
 }) => {
-
 
   const [creatingFlight, setCreatingFlight] = useState<boolean>(false);
 
@@ -18,6 +19,23 @@ const Sidebar = ({stations, client, flights}: {
 
       {/* Action Buttons */}
       <div className="flex flex-col w-full gap-2 text-primary">
+
+        {isFlatMode && 
+          <button className="flex gap-2 hover:text-white duration-300 hover:translate-x-2"
+            onClick={() => setIsFlatMode(false)}
+          >
+            <IconWorld /> 3D Mode
+          </button>
+        }
+
+        {!isFlatMode &&
+          <button className="flex gap-2 hover:text-white duration-300 hover:translate-x-2"
+            onClick={() => setIsFlatMode(true)}
+          >
+            <IconMap /> 2D Mode
+          </button>
+        }
+
         <button className='flex gap-2 hover:text-white duration-300 hover:translate-x-2'
         onClick={() => setCreatingFlight(true)}
         >
