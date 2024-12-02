@@ -36,6 +36,8 @@ public class WebSocketController {
         // Add station to array
         FlightSimulationApplication.addStation(station);
 
+        System.out.println(FlightSimulationApplication.stations);
+
         // Convert and refresh stations
         messagingTemplate.convertAndSend("/topic/newstation", station);
     }

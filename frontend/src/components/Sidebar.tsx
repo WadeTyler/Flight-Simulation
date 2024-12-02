@@ -45,6 +45,7 @@ const Sidebar = ({stations, client, flights, isFlatMode, setIsFlatMode}: {
 
       <div className="flex flex-col gap-4 h-full overflow-hidden">
         <h2 className='text-xl w-full text-center font-bold text-primary pb-2 border-white border-b'>Flight History</h2>
+        <p className="text-center text-white"><span className='text-primary'>In Air: </span>{flights.filter((flight) => !flight.landed).length}</p>
 
         <div className="flex flex-col w-full gap-4 overflow-y-scroll">
           {/* Map Flights */}

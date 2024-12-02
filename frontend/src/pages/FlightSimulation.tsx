@@ -49,7 +49,7 @@ const FlightSimulation = () => {
         console.log("Connected to WebSocket via STOMP");
 
         stompClient.subscribe("/topic/stations", (message) => {
-          // handle incoming stations
+          // handle initial stations
           const response = JSON.parse(message.body);
 
           response.forEach((station: Station) => {
@@ -61,6 +61,7 @@ const FlightSimulation = () => {
           setStations(response);
         });
 
+        // Handle new stations
         stompClient.subscribe("/topic/newstation", (message) => {
           const response = JSON.parse(message.body);
           console.log(response);
@@ -70,14 +71,10 @@ const FlightSimulation = () => {
 
           setStations(prev => [...prev, response]);
           toast.success(`Station ${response.name} has been added.`);
-        })
+        });
 
         stompClient.subscribe("/topic/flights", (message) => {
           const response = JSON.parse(message.body);
-
-          // Debug
-          console.log(response);
-
           setFlights(response);
         })
 
@@ -105,8 +102,9 @@ const FlightSimulation = () => {
 
 
     return () => {
-      if (client) {
-        client.deactivate();
+      
+      if (stompClient.connected) {
+        stompClient.deactivate();
       }
     };
 
