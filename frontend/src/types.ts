@@ -21,6 +21,7 @@ export type Airplane = {
 }
 
 export type Flight = {
+  flightId: string;
   airplane: Airplane;
   route: Station[];
   totalFlightDuration: number;
@@ -28,8 +29,4 @@ export type Flight = {
   lastTimestamp: string;
   startTime: string;
   landedTime: string;
-  locationStamps: {
-    longitude: number;
-    latitude: number;
-  }[];
 }

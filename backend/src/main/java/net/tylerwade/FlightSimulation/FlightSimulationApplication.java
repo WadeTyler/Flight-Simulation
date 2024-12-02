@@ -20,7 +20,7 @@ public class FlightSimulationApplication {
 		SpringApplication.run(FlightSimulationApplication.class, args);
 
 		// Create Stations
-		Station virginiaStation = new Station("Viriginia Airlines", 37.4316, -78.6569);
+		Station virginiaStation = new Station("Virginia Airlines", 37.4316, -78.6569);
 		Station californiaStation = new Station("California Airlines", 36.7783, -119.4179);
 		Station texasStation = new Station("Texas Airlines" , 31.9686, -99.9018);
 

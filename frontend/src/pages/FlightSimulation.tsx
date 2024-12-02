@@ -6,7 +6,6 @@ import StationComponent from "../components/StationComponent";
 import { calculateLatitude, calculateLongitude, calculateX, calculateY } from "../lib/utils";
 import { Client } from "@stomp/stompjs";
 import AirplaneComponent from "../components/AirplaneComponent";
-import LocationStampComponent from "../components/LocationStampComponent";
 import toast from "react-hot-toast";
 import Background from "../components/Background";
 
@@ -147,9 +146,6 @@ const FlightSimulation = () => {
 
           if (!flight.landed) return (
             <div className="" key={index}>
-              {flight.locationStamps.map((locationStamp, locationStampIndex) => (
-                <LocationStampComponent locationStamp={locationStamp} color={color} key={locationStampIndex} />
-              ))}
               <AirplaneComponent airplane={flight.airplane} color={color} />
             </div>
           )
@@ -169,8 +165,6 @@ const FlightSimulation = () => {
 
       
       {creatingStation && <CreateStation mousePosition={mousePosition} stations={stations} setStations={setStations} setCreatingStation={setCreatingStation} client={client} />}
-
-      
 
     </div>
   )

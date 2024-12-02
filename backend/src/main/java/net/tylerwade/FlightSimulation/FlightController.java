@@ -12,9 +12,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-
+import java.util.UUID;
 
 public class FlightController {
+
+    private String flightId = UUID.randomUUID().toString();
 
     // Array of stations in traversal order. The first station is always the starting station
     private RouteVertex startingPoint;
@@ -28,7 +30,6 @@ public class FlightController {
     private LocalDateTime lastTimestamp;
     private double totalFlightDuration = 0;
     private ArrayList<Station> route;
-    private ArrayList<LocationStamp> locationStamps = new ArrayList<>();
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -133,10 +134,6 @@ public class FlightController {
         airplane.setLongitude(currentLongitude);
         airplane.setRotation(angle);
 
-        if (locationStamps.size() >= 30) {
-            locationStamps.remove(0);
-        }
-        locationStamps.add(new LocationStamp(currentLongitude, currentLatitude));
     }
 
 
@@ -162,6 +159,10 @@ public class FlightController {
 
         // Calculate the flight duration in hours
         return distance / speed;
+    }
+
+    public String getFlightId() {
+        return flightId;
     }
 
     public Airplane getAirplane() {
@@ -190,33 +191,5 @@ public class FlightController {
 
     public ArrayList<Station> getRoute() {
         return route;
-    }
-
-    public ArrayList<LocationStamp> getLocationStamps() {
-        return locationStamps;
-    }
-}
-
-class LocationStamp {
-    private LocalDateTime timestamp;
-    private double longitude;
-    private double latitude;
-
-    public LocationStamp(double longitude, double latitude) {
-        this.timestamp = LocalDateTime.now();
-        this.longitude = longitude;
-        this.latitude = latitude;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public double getLatitude() {
-        return latitude;
     }
 }
