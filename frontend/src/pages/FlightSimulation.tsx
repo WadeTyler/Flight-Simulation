@@ -12,7 +12,6 @@ import { World } from "../components/Globe";
 
 const FlightSimulation = () => {
 
-
   const [isFlatMode, setIsFlatMode] = useState<boolean>(true);
 
   const [creatingStation, setCreatingStation] = useState<boolean>(false);
@@ -41,7 +40,7 @@ const FlightSimulation = () => {
 
   useEffect(() => {
     const stompClient = new Client({
-      brokerURL: "ws://localhost:8080/ws",
+      brokerURL: "ws://flight-backend:8080/ws",
       // debug: (str) => {
       //   console.log(str);
       // },

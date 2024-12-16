@@ -1,0 +1,19 @@
+services:
+  flight-backend:
+    image: flight-backend
+    build: ./backend/
+    ports:
+      - "8080:8080"
+    networks:
+      - flight-network
+
+  flight-frontend:
+    build: ./frontend/
+    ports:
+      - "5050:80"
+    networks:
+      - flight-network
+
+networks:
+  flight-network:
+    driver: bridge

@@ -1,0 +1,29 @@
+
+# Build the app
+FROM node:18 AS build
+
+# Set workign directory
+WORKDIR /app
+
+# Install dependencies
+COPY package.json package-lock.json ./
+RUN npm install
+
+# Copy source code
+COPY . .
+
+# Build the app
+RUN npm run build
+
+# Serve the app with nginx
+FROM nginx:alpine
+
+# Copy the build files to the nginx html directory
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Expose port 5050
+EXPOSE 5050
+
+# Start nginx
+CMD ["nginx", "-g", "daemon off;", "-p", "5050"]
+
