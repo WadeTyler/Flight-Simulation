@@ -25,5 +25,5 @@ COPY --from=build /app/dist /usr/share/nginx/html
 EXPOSE 5050
 
 # Start nginx
-CMD ["nginx", "-g", "daemon off;", "-p", "5050"]
+CMD ["nginx", "-g", "daemon off;"]
 
