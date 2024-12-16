@@ -1,4 +1,4 @@
-import { IconMap, IconPlaneDeparture, IconWorld } from '@tabler/icons-react'
+import { IconMap, IconPlaneDeparture } from '@tabler/icons-react'
 import { Flight, Station } from '../types'
 import { SetStateAction, useState } from 'react';
 import CreateAirplane from './CreateAirplane';

@@ -1,4 +1,4 @@
-import { MouseEvent, SetStateAction, useEffect, useState } from "react"
+import { SetStateAction, useEffect, useState } from "react"
 import { Flight, MousePosition, Station } from "../types";
 import CreateStation from "../components/CreateStation";
 import Sidebar from "../components/Sidebar";
