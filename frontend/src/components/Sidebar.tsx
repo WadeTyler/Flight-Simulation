@@ -20,13 +20,13 @@ const Sidebar = ({stations, client, flights, isFlatMode, setIsFlatMode}: {
       {/* Action Buttons */}
       <div className="flex flex-col w-full gap-2 text-primary">
 
-        {isFlatMode && 
+        {/* {isFlatMode && 
           <button className="flex gap-2 hover:text-white duration-300 hover:translate-x-2"
             onClick={() => setIsFlatMode(false)}
           >
             <IconWorld /> 3D Mode
           </button>
-        }
+        } */}
 
         {!isFlatMode &&
           <button className="flex gap-2 hover:text-white duration-300 hover:translate-x-2"
